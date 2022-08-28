@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+
+    #input{
+      height: 20px;
+      width: 200px;
+    }
+
+  </style>
+</head>
+<body>
+  <input id="input" type="url" name="someUrl" onblur="checkURL(this)" placeholder="Enter your Url" />
+  <button>تایید</button>
+</body>
+<script>
+  function checkURL (abc) {
+    var string = abc.value;
+    if (!~string.indexOf("http")) {
+    string = "https://" + string + ",";
+}
+    abc.value = string;
+    return abc;
+}
+</script>
+</html>

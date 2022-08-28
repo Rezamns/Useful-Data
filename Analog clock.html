@@ -1,0 +1,352 @@
+<!-- ساعت شماره 1 -->
+<!DOCTYPE html>
+<style>
+ .clock {
+  background: #ececec;
+  width: 300px;
+  height: 300px;
+  margin: 8% auto 0;
+  border-radius: 50%;
+  border: 14px solid #333;
+  position: relative;
+  box-shadow: 0 2vw 4vw -1vw rgba(0,0,0,0.8);
+}
+
+.dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ccc;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  position: absolute;
+  z-index: 10;
+  box-shadow: 0 2px 4px -1px black;
+}
+
+.hour-hand {
+  position: absolute;
+  z-index: 5;
+  width: 4px;
+  height: 65px;
+  background: #333;
+  top: 79px;
+  transform-origin: 50% 72px;
+  left: 50%;
+  margin-left: -2px;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+}
+
+.minute-hand {
+  position: absolute;
+  z-index: 6;
+  width: 4px;
+  height: 100px;
+  background: #666;
+  top: 46px;
+  left: 50%;
+  margin-left: -2px;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+  transform-origin: 50% 105px;
+}
+
+.second-hand {
+  position: absolute;
+  z-index: 7;
+  width: 2px;
+  height: 120px;
+  background: red;
+  top: 26px;
+  lefT: 50%;
+  margin-left: -1px;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+  transform-origin: 50% 125px;
+}
+
+span {
+  display: inline-block;
+  position: absolute;
+  color: #333;
+  font-size: 22px;
+  font-family: 'Poiret One';
+  font-weight: 700;
+  z-index: 4;
+}
+
+.h12 {
+  top: 30px;
+  left: 50%;
+  margin-left: -9px;
+}
+.h3 {
+  top: 140px;
+  right: 30px;
+}
+.h6 {
+  bottom: 30px;
+  left: 50%;
+  margin-left: -5px;
+}
+.h9 {
+  left: 32px;
+  top: 140px;
+}
+
+.diallines {
+  position: absolute;
+  z-index: 2;
+  width: 2px;
+  height: 15px;
+  background: #666;
+  left: 50%;
+  margin-left: -1px;
+  transform-origin: 50% 150px;
+}
+.diallines:nth-of-type(5n) {
+  position: absolute;
+  z-index: 2;
+  width: 4px;
+  height: 25px;
+  background: #666;
+  left: 50%;
+  margin-left: -1px;
+  transform-origin: 50% 150px;
+}
+
+.info {
+  position: absolute;
+  width: 120px;
+  height: 20px;
+  border-radius: 7px;
+  background: #ccc;
+  text-align: center;
+  line-height: 20px;
+  color: #000;
+  font-size: 11px;
+  top: 200px;
+  left: 50%;
+  margin-left: -60px;
+  font-family: "Poiret One";
+  font-weight: 700;
+  z-index: 3;
+  letter-spacing: 3px;
+  margin-left: -60px;
+  left: 50%;
+}
+.date {
+    top: 80px;
+  }
+.day {
+    top: 200px;
+}
+</style>
+<body>
+	<div class="clock">
+		<div>
+		  <div class="info date"></div>
+		  <div class="info day"></div>
+		</div>
+		<div class="dot"></div>
+		<div>
+		  <div class="hour-hand"></div>
+		  <div class="minute-hand"></div>
+		  <div class="second-hand"></div>
+		</div>
+		<div>
+		  <span class="h3">3</span>
+		  <span class="h6">6</span>
+		  <span class="h9">9</span>
+		  <span class="h12">12</span>
+		</div>
+		<div class="diallines"></div>
+	  </div>
+</body>
+<script>
+var dialLines = document.getElementsByClassName('diallines');
+var clockEl = document.getElementsByClassName('clock')[0];
+
+for (var i = 1; i < 60; i++) {
+  clockEl.innerHTML += "<div class='diallines'></div>";
+  dialLines[i].style.transform = "rotate(" + 6 * i + "deg)";
+}
+
+function clock() {
+  var weekday = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+        // "یک شنبه",
+        // "دو شنبه",
+        // "سه شنبه",
+        // "چهار شنبه",
+        // "پنج شنبه",
+        // "جمعه",
+        // "شنبه"
+      ],
+      d = new Date(),
+      h = d.getHours(),
+      m = d.getMinutes(),
+      s = d.getSeconds(),
+      date = d.getDate(),
+      month = d.getMonth() + 1,
+      year = d.getFullYear(),
+           
+      hDeg = h * 30 + m * (360/720),
+      mDeg = m * 6 + s * (360/3600),
+      sDeg = s * 6,
+      
+      hEl = document.querySelector('.hour-hand'),
+      mEl = document.querySelector('.minute-hand'),
+      sEl = document.querySelector('.second-hand'),
+      dateEl = document.querySelector('.date'),
+      dayEl = document.querySelector('.day');
+  
+      var day = weekday[d.getDay()];
+  
+  if(month < 9) {
+    month = "0" + month;
+  }
+  
+  hEl.style.transform = "rotate("+hDeg+"deg)";
+  mEl.style.transform = "rotate("+mDeg+"deg)";
+  sEl.style.transform = "rotate("+sDeg+"deg)";
+  dateEl.innerHTML = date+"/"+month+"/"+year;
+  dayEl.innerHTML = day;
+}
+
+setInterval("clock()", 100);
+</script>
+</html>
+
+
+
+
+
+		<!-- ساعت شماره 2 -->
+<!-- <!DOCTYPE html>
+<style>
+  .clock {
+	background: linear-gradient(135deg, #f5f5f5, #e6e7ee);
+	border: 2px solid #d1d9e6;
+	border-radius: 100%;
+	box-shadow: 6px 6px 12px #b8b9be, -6px -6px 12px #fff;
+	height: 350px;
+	position: relative;
+	width: 350px;
+  }
+  
+  .minute,
+  .hour {
+	background: white;
+	border: 2px solid #1b1b1b;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	bottom: 0;
+	height: 80px;
+	left: 0;
+	margin: auto;
+	position: absolute;
+	right: 0;
+	top: -24%;
+	transform-origin: bottom center;
+	transition: transform 0.3s cubic-bezier(0.4, 2.08, 0.55, 0.44);
+	width: 4px;
+  }
+  
+  .minute {
+	height: 125px;
+	top: -37%;
+  }
+  
+  .second {
+	background: #ff6f61;
+	border: 1px solid #ff6f61;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	bottom: 0px;
+	height: 180px;
+	left: 0px;
+	margin: auto;
+	position: absolute;
+	right: 0px;
+	top: -40.8%;
+	transform-origin: 50% 89%;
+	transition: transform 0.2s cubic-bezier(0.4, 2.08, 0.55, 0.44);
+	width: 2px;
+	z-index: 1;
+  }
+  .hide-transition {
+	transition: none;
+  }
+  .axis {
+	background: #ff6f61;
+	border: 2px solid white;
+	border-radius: 100%;
+	bottom: 0;
+	box-shadow: 0 0 0 1px #1b1b1b;
+	height: 8px;
+	left: 0;
+	margin: auto;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 8px;
+  }
+</style>
+<body>
+    <div class="clock-container">
+        <div class="clock">
+          <span class="hour"></span>
+          <span class="minute"></span>
+          <span class="second"></span>
+          <span class="axis"></span>
+        </div>
+      </div>
+</body>
+<script>
+  clock();
+
+function clock() {
+  const date = new Date();
+
+  const hours = ((date.getHours() + 11) % 12) + 1;
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+
+  const hour = hours * 30;
+  const minute = minutes * 6;
+  const second = seconds * 6;
+
+  const hourHand = document.querySelector(".hour");
+  const minuteHand = document.querySelector(".minute");
+  const secondHand = document.querySelector(".second");
+
+  hourHand.style.transform = `rotate(${hour}deg)`;
+  minuteHand.style.transform = `rotate(${minute}deg)`;
+  second == 0
+    ? secondHand.classList.add("hide-transition")
+    : secondHand.classList.remove("hide-transition");
+  secondHand.style.transform = `rotate(${second}deg)`;
+
+  let hourOffsetSign = hour > 135 && hour < 315 ? "-" : "";
+  let minuteOffsetSign = minute > 135 && minute < 315 ? "-" : "";
+  let secondOffsetSign = second > 135 && second < 315 ? "-" : "";
+
+  hourHand.style.boxShadow = `${hourOffsetSign}6px ${hourOffsetSign}6px 6px #b8b9be`;
+  minuteHand.style.boxShadow = `${minuteOffsetSign}6px ${minuteOffsetSign}6px 6px #b8b9be`;
+  secondHand.style.boxShadow = `${secondOffsetSign}6px ${secondOffsetSign}6px 6px #b8b9be`;
+}
+
+setInterval(clock, 1000);
+</script>
+</html> -->
